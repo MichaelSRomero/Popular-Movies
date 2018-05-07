@@ -15,7 +15,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTestTextView;
 
-    private final String MOVIE_URL = "http://api.themoviedb.org/3/movie/popular?";
+    /** Add your own API Key by accessing "https://developers.themoviedb.org" */
+    private final String API_KEY = "api_key=";
+    private final String MOVIE_URL = "http://api.themoviedb.org/3/movie/popular?" + API_KEY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
