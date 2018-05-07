@@ -24,8 +24,11 @@ public class MainActivity extends AppCompatActivity
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovieList;
 
+<<<<<<< HEAD
     private static final int MOVIE_LOADER_ID = 1;
 
+=======
+>>>>>>> 56031e2634f508d982ef96b36d1d7dd4cbf28873
     /** Add your own API Key by accessing "https://developers.themoviedb.org" */
     private final String API_KEY = "api_key=";
     private final String MOVIE_URL = "http://api.themoviedb.org/3/movie/popular?" + API_KEY;
