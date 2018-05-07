@@ -62,6 +62,10 @@ public final class QueryUtils {
                         voteAverage,
                         releaseDate);
 
+                Log.e(LOG_TAG, "MOVIE AVERAGE: " + voteAverage);
+                Log.e(LOG_TAG, "MOVIE POSTER: " + posterPath);
+                Log.e(LOG_TAG, "MOVIE TITLE: " + originalTitle);
+
                 movieList.add(movie);
             }
 
