@@ -1,17 +1,26 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+
+import static com.example.android.popularmovies.Data.Keys.OVERVIEW;
+import static com.example.android.popularmovies.Data.Keys.RELEASE_DATE;
+import static com.example.android.popularmovies.Data.Keys.THUMBNAIL;
+import static com.example.android.popularmovies.Data.Keys.TITLE;
+import static com.example.android.popularmovies.Data.Keys.USER_RATING;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> {
 
@@ -22,12 +31,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
         public TextView title, userRating;
         public ImageView thumbnail;
+        public RelativeLayout relativeLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.tv_title);
             userRating = itemView.findViewById(R.id.tv_rating);
             thumbnail = itemView.findViewById(R.id.iv_thumbnail);
+            relativeLayout = itemView.findViewById(R.id.relativeLayout);
         }
     }
 
@@ -46,7 +57,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Movie currentMovie = mMovieList.get(position);
 
         holder.title.setText(currentMovie.getTitle());
@@ -57,6 +68,26 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         Glide.with(mContext)
                 .load(currentMovie.getThumbnail())
                 .into(holder.thumbnail);
+
+        // Opens DetailActivity when clicked on movie thumbnail
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                Bundle bundle = new Bundle();
+
+                // Passes all Movie details into the DetailActivity screen
+                bundle.putString(TITLE , currentMovie.getTitle());
+                bundle.putString(THUMBNAIL, currentMovie.getLargeThumbnail());
+                bundle.putString(OVERVIEW, currentMovie.getOverview());
+                bundle.putString(USER_RATING, currentMovie.getUserRating());
+                bundle.putString(RELEASE_DATE, currentMovie.getReleaseDate());
+                intent.putExtras(bundle);
+
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

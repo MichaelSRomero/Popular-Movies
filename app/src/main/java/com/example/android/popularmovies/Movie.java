@@ -11,6 +11,7 @@ public class Movie {
 
     private final String THUMBNAIL_BASE_URL = "http://image.tmdb.org/t/p/";
     private final String FILE_DEFAULT_SIZE = "w342";
+    private final String FILE_LARGE_SIZE = "w500";
 
     public Movie(String title, String thumbnail, String overview,
                  String userRating, String releaseDate) {
@@ -27,6 +28,10 @@ public class Movie {
 
     public String getThumbnail() {
         return THUMBNAIL_BASE_URL + FILE_DEFAULT_SIZE + mThumbnail;
+    }
+
+    public String getLargeThumbnail() {
+        return THUMBNAIL_BASE_URL + FILE_LARGE_SIZE + mThumbnail;
     }
 
     public String getOverview() {
