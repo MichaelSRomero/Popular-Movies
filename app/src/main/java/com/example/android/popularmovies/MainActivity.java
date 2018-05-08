@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity
     private static final int MOVIE_LOADER_ID = 1;
 
     /** Add your own API Key by accessing "https://developers.themoviedb.org" */
-    private final String API_KEY = "api_key=";
+    private final String API_KEY = "api_key=6ec3702af14868934fb9363ddc62594e";
     private final String MOVIE_URL = "http://api.themoviedb.org/3/movie/popular?" + API_KEY;
 
     @Override

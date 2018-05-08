@@ -8,9 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- Hides Toolbar -->
-    <style name="AppThemeNoTitle" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowNoTitle">true</item>
+    <!-- Allows for a Translucent App Bar -->
+    <style name="AppTheme.Transparent" parent="AppTheme">
+        <item name="windowActionBarOverlay">true</item>
     </style>
 
 </resources>

@@ -1,6 +1,8 @@
 package com.example.android.popularmovies;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +20,17 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        // Enables back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        // Setting Translucent color on App Bar
+        getSupportActionBar().setBackgroundDrawable(
+                new ColorDrawable(ContextCompat.getColor(this, R.color.TranslucentColor)));
+
+        // Removing ActionBar Title
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Receive bundle from MainActivity
         // If bundle is not empty, then store all values within their respective String objects

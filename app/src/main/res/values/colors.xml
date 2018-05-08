@@ -3,4 +3,7 @@
     <color name="colorPrimary">#BDBDBD</color>
     <color name="colorPrimaryDark">#9E9E9E</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- Color used for App Bar inside Details Activity -->
+    <color name="TranslucentColor">#29000000</color>
 </resources>
