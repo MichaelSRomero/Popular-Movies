@@ -2,13 +2,18 @@ package com.example.android.popularmovies;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.android.popularmovies.Data.MovieLoader;
 
@@ -27,8 +32,8 @@ public class MainActivity extends AppCompatActivity
     private static final int MOVIE_LOADER_ID = 1;
 
     /** Add your own API Key by accessing "https://developers.themoviedb.org" */
-    private final String API_KEY = "api_key=6ec3702af14868934fb9363ddc62594e";
-    private final String MOVIE_URL = "http://api.themoviedb.org/3/movie/popular?" + API_KEY;
+    private final String API_KEY = "api_key=";
+    private final String MOVIE_BASE_URL = "http://api.themoviedb.org/3/movie/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int i, Bundle bundle) {
-        return new MovieLoader(this, MOVIE_URL);
+
+        // Receives changes to preference to add to URL
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        String orderBy = sharedPreferences.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default)
+        );
+
+        String movieUrl = MOVIE_BASE_URL + orderBy + API_KEY;
+
+        return new MovieLoader(this, movieUrl);
     }
 
     @Override
@@ -79,5 +95,22 @@ public class MainActivity extends AppCompatActivity
     public void onLoaderReset(Loader<List<Movie>> loader) {
         // Reset loader to clear existing data
         mMovieAdapter.clearData(mMovieList);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
