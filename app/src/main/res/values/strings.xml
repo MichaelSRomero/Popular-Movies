@@ -24,4 +24,27 @@
     <!-- Label for order-by highest rated option [CHAR LIMIT=20] -->
     <string name="settings_order_by_rating_label">Highest-Rated</string>
     <string name="settings_order_by_rating_value" translatable="false">top_rated?</string>
+
+    <!-- Error message for when NetworkInfo is null -->
+    <string name="no_internet_connection">
+        No internet connection.\n
+        Try:\n
+        Turning off Airplane mode\n
+        Turning on mobile data or Wi-fi\n
+        Checking the signal in your area
+    </string>
+
+    <!-- Error message for when there are no Movies found [CHAR LIMIT=20] -->
+    <string name="no_data">No movies found.</string>
+
+    <!-- Located within movie_item.xml [CHAR LIMIT=20] -->
+    <string name="movie_item_rating_filler">9.5</string>
+    <string name="movie_item_title_filler">Interstellar</string>
+
+    <!-- Located within detail_activity.xml [CHAR LIMIT=20] -->
+    <string name="detail_rating_filler">8.7 / 10</string>
+    <string name="detail_separator">|</string>
+    <string name="detail_release_date_filler">2018-04-10</string>
+    <string name="detail_overview_label">Overview</string>
+    <string name="detail_10_stars">/ 10</string>
 </resources>

@@ -12,4 +12,5 @@ public class Keys {
     public static final String OVERVIEW = "overview";
     public static final String USER_RATING = "user-rating";
     public static final String RELEASE_DATE = "release date";
+    public static final String BACKDROP = "backdrop";
 }

@@ -13,4 +13,24 @@
         <item name="windowActionBarOverlay">true</item>
     </style>
 
+    <style name="Border">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/detail_border</item>
+        <item name="android:background">@color/xml_border</item>
+    </style>
+
+    <style name="MainDetailText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="MainDetailText.Title" parent="MainDetailText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/detail_title_text</item>
+    </style>
+
+    <style name="MainDetailText.Details" parent="MainDetailText">
+        <item name="android:textSize">@dimen/text_16sp</item>
+    </style>
+
 </resources>

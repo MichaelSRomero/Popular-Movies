@@ -14,6 +14,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.android.popularmovies.Data.MovieLoader;
 
@@ -25,10 +27,14 @@ public class MainActivity extends AppCompatActivity
 
     public static final String LOG_TAG = MainActivity.class.getName();
 
-    private RecyclerView mRecyclerView;
+    private EmptyRecyclerView mRecyclerView;
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovieList;
 
+    /** TextView that is displayed when the list is empty */
+    private TextView mEmptyStateTextView;
+
+    private NetworkInfo mNetworkInfo = null;
     private static final int MOVIE_LOADER_ID = 1;
 
     /** Add your own API Key by accessing "https://developers.themoviedb.org" */
@@ -41,6 +47,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         mRecyclerView = findViewById(R.id.recycler_view);
+        // Sets empty view
+        mEmptyStateTextView = findViewById(R.id.empty_view);
+        mRecyclerView.setEmptyView(mEmptyStateTextView);
+
         mMovieList = new ArrayList<>();
         mMovieAdapter = new MovieAdapter(this, mMovieList);
 
@@ -49,22 +59,25 @@ public class MainActivity extends AppCompatActivity
 
         mRecyclerView.setAdapter(mMovieAdapter);
 
-        // Get a reference to the ConnectivityManager to check state of network connectivity
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        checkNetworkConnectivity();
 
-        // Get details on the currently active default data network
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-        if (activeNetwork != null && activeNetwork.isConnected()) {
+        // If there is a network connection, fetch data
+        if (mNetworkInfo != null && mNetworkInfo.isConnected()) {
             getLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
-        } // Add else method to display error and hide loading indicator
+        } else {
+            // Else display error and hide loading indicator
+            View loadingIndicator = findViewById(R.id.progress_bar);
+            loadingIndicator.setVisibility(View.GONE);
+
+            mEmptyStateTextView.setText(R.string.no_internet_connection);
+        }
     }
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int i, Bundle bundle) {
 
-        // Receives changes to preference to add to URL
+        // Gets called whenever the "Order-by" settings is changed
+        // Value gets changed between "popular?" and "top-rated?"
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
         String orderBy = sharedPreferences.getString(
@@ -77,15 +90,38 @@ public class MainActivity extends AppCompatActivity
         return new MovieLoader(this, movieUrl);
     }
 
+    /**
+     *
+     * @return the mNetworkInfo either null or with a network
+     */
+    private NetworkInfo checkNetworkConnectivity() {
+        // Get a reference to the Connectivity Manager to check state of network connectivity
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        // Get details on the currently active default data network
+        mNetworkInfo = connMgr.getActiveNetworkInfo();
+
+        return mNetworkInfo;
+    }
+
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movieList) {
-        // Add loading indicator,
+
+        View loadingIndicator = findViewById(R.id.progress_bar);
+        loadingIndicator.setVisibility(View.GONE);
+
+        checkNetworkConnectivity();
+
+        if (mNetworkInfo == null) {
+            mEmptyStateTextView.setText(R.string.no_internet_connection);
+        } else {
+            mEmptyStateTextView.setText(R.string.no_data);
+        }
+
         // clear adapter of previous data
         mMovieAdapter.clearData(movieList);
 
-        // Add if/else statement,
-        // if valid list exist, add them to bundle to trigger ListView to update;
-        // else set empty state text
         if (movieList != null && !movieList.isEmpty()) {
             mMovieAdapter.addData(movieList);
         }

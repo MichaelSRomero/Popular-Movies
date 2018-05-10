@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import static com.example.android.popularmovies.Data.Keys.BACKDROP;
 import static com.example.android.popularmovies.Data.Keys.OVERVIEW;
 import static com.example.android.popularmovies.Data.Keys.RELEASE_DATE;
 import static com.example.android.popularmovies.Data.Keys.THUMBNAIL;
@@ -37,7 +38,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
             super(itemView);
             title = itemView.findViewById(R.id.tv_title);
             userRating = itemView.findViewById(R.id.tv_rating);
-            thumbnail = itemView.findViewById(R.id.iv_thumbnail);
+            thumbnail = itemView.findViewById(R.id.iv_backdrop);
             relativeLayout = itemView.findViewById(R.id.relativeLayout);
         }
     }
@@ -83,6 +84,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
                 bundle.putString(OVERVIEW, currentMovie.getOverview());
                 bundle.putString(USER_RATING, currentMovie.getUserRating());
                 bundle.putString(RELEASE_DATE, currentMovie.getReleaseDate());
+                bundle.putString(BACKDROP, currentMovie.getBackdrop());
                 intent.putExtras(bundle);
 
                 view.getContext().startActivity(intent);

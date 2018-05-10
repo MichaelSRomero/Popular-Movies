@@ -11,101 +11,104 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/iv_thumbnail"
+            android:id="@+id/iv_backdrop"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="@dimen/detail_backdrop_height"
             android:scaleType="centerCrop"
             android:src="@drawable/thumbnail_meduim"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/iv_poster_thumbnail"
+            android:layout_width="@dimen/detail_thumbnail_width"
+            android:layout_height="@dimen/detail_thumbnail_height"
+            android:layout_marginBottom="@dimen/padding_margin_16dp"
+            android:layout_marginLeft="@dimen/padding_margin_16dp"
+            android:layout_marginStart="@dimen/padding_margin_16dp"
+            android:background="@drawable/rectangle_shape"
+            android:scaleType="centerCrop"
+            android:src="@drawable/thumbnail_meduim"
+            app:layout_constraintBottom_toTopOf="@+id/view"
+            app:layout_constraintStart_toStartOf="@+id/iv_backdrop" />
+
         <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#444444"
+            android:id="@+id/view"
+            style="@style/Border"
             app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- MAIN DETAILS -->
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#E600BCD4"
-            android:paddingBottom="8dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="8dp"
-            android:paddingTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_thumbnail"
-            app:layout_constraintStart_toStartOf="@+id/iv_thumbnail">
+            android:background="@color/cyan_500_translucent"
+            android:paddingBottom="@dimen/padding_margin_8dp"
+            android:paddingLeft="@dimen/padding_margin_16dp"
+            android:paddingRight="@dimen/padding_margin_8dp"
+            android:paddingTop="@dimen/padding_margin_8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_backdrop"
+            app:layout_constraintStart_toStartOf="@+id/iv_backdrop">
 
             <TextView
                 android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                tools:text="Interstellar" />
+                style="@style/MainDetailText.Title"
+                android:textColor="@color/white"
+                tools:text="@string/movie_item_title_filler" />
 
             <TextView
                 android:id="@+id/tv_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/MainDetailText.Details"
                 android:layout_below="@+id/tv_title"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                tools:text="8.7 / 10" />
+                android:textColor="@color/white"
+                tools:text="@string/detail_rating_filler" />
 
             <TextView
                 android:id="@+id/tv_seperator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/MainDetailText.Details"
                 android:layout_below="@id/tv_title"
-                android:textColor="@android:color/white"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="@dimen/padding_margin_8dp"
                 android:layout_toRightOf="@+id/tv_rating"
-                android:text="|"
-                android:textSize="16sp" />
+                android:text="@string/detail_separator"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/tv_release_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/MainDetailText.Details"
                 android:layout_below="@+id/tv_title"
-                android:textColor="@android:color/white"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="@dimen/padding_margin_8dp"
                 android:layout_toRightOf="@id/tv_seperator"
-                android:textSize="16sp"
-                tools:text="2018-04-10" />
+                android:textColor="@color/white"
+                tools:text="@string/detail_release_date_filler" />
 
         </RelativeLayout>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#444444"
+            style="@style/Border"
             app:layout_constraintStart_toStartOf="@+id/relativeLayout"
             app:layout_constraintTop_toTopOf="@+id/overview_label" />
 
+        <!-- OVERVIEW -->
         <TextView
             android:id="@+id/overview_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:paddingLeft="16dp"
-            android:textSize="20sp"
+            android:paddingLeft="@dimen/padding_margin_16dp"
+            android:paddingTop="@dimen/padding_margin_8dp"
+            android:text="@string/detail_overview_label"
+            android:textSize="@dimen/text_20sp"
             android:textStyle="bold"
-            android:text="Overview"
-            app:layout_constraintStart_toStartOf="@+id/iv_thumbnail"
+            app:layout_constraintStart_toStartOf="@+id/iv_backdrop"
             app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#444444"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="16dp"
+            android:layout_height="@dimen/detail_border_small"
+            android:layout_marginLeft="@dimen/padding_margin_8dp"
+            android:layout_marginRight="@dimen/padding_margin_16dp"
+            android:layout_marginTop="@dimen/padding_margin_4dp"
+            android:background="@color/xml_border"
             app:layout_constraintStart_toStartOf="@+id/overview_label"
             app:layout_constraintTop_toBottomOf="@+id/overview_label" />
 
@@ -113,12 +116,12 @@
             android:id="@+id/tv_overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="8dp"
-            android:textSize="16sp"
-            android:paddingBottom="16dp"
-            app:layout_constraintStart_toStartOf="@+id/iv_thumbnail"
+            android:paddingBottom="@dimen/padding_margin_16dp"
+            android:paddingLeft="@dimen/padding_margin_16dp"
+            android:paddingRight="@dimen/padding_margin_16dp"
+            android:paddingTop="@dimen/padding_margin_8dp"
+            android:textSize="@dimen/text_16sp"
+            app:layout_constraintStart_toStartOf="@+id/iv_backdrop"
             app:layout_constraintTop_toBottomOf="@+id/overview_label"
             tools:text="@string/overview_filler" />
 

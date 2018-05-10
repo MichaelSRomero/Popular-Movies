@@ -12,9 +12,9 @@ import com.example.android.popularmovies.Data.Keys;
 
 public class DetailActivity extends AppCompatActivity {
 
-    public String mTitle, mThumbnail, mOverview, mUserRating, mReleaseDate;
+    public String mTitle, mThumbnail, mOverview, mUserRating, mReleaseDate, mBackdropPath;
     public TextView mTitleView, mOverviewText, mRatingView, mReleaseDateView;
-    public ImageView mThumbnailView;
+    public ImageView mThumbnailView, mBackdropView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +41,15 @@ public class DetailActivity extends AppCompatActivity {
             mOverview = receiveBundle.getString(Keys.OVERVIEW);
             mUserRating = receiveBundle.getString(Keys.USER_RATING);
             mReleaseDate = receiveBundle.getString(Keys.RELEASE_DATE);
+            mBackdropPath = receiveBundle.getString(Keys.BACKDROP);
         }
 
         mTitleView = findViewById(R.id.tv_title);
         mOverviewText = findViewById(R.id.tv_overview);
         mRatingView = findViewById(R.id.tv_rating);
         mReleaseDateView = findViewById(R.id.tv_release_date);
-        mThumbnailView = findViewById(R.id.iv_thumbnail);
+        mBackdropView = findViewById(R.id.iv_backdrop);
+        mThumbnailView = findViewById(R.id.iv_poster_thumbnail);
 
         displayDetails();
     }
@@ -58,10 +60,13 @@ public class DetailActivity extends AppCompatActivity {
     public void displayDetails() {
         mTitleView.setText(mTitle);
         mOverviewText.setText(mOverview);
-        mRatingView.setText(mUserRating + " / 10");
+        mRatingView.setText(mUserRating + getString(R.string.detail_10_stars));
         mReleaseDateView.setText(mReleaseDate);
 
         // Loads movie poster using Glide Library
+        Glide.with(this)
+                .load(mBackdropPath)
+                .into(mBackdropView);
         Glide.with(this)
                 .load(mThumbnail)
                 .into(mThumbnailView);

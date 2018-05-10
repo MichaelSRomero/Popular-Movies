@@ -1,25 +1,25 @@
 package com.example.android.popularmovies;
 
-import android.net.Uri;
-
 public class Movie {
     private String mTitle;
     private String mThumbnail;
     private String mOverview;
     private String mUserRating;
     private String mReleaseDate;
+    private String mBackdrop;
 
     private final String THUMBNAIL_BASE_URL = "http://image.tmdb.org/t/p/";
     private final String FILE_DEFAULT_SIZE = "w342";
     private final String FILE_LARGE_SIZE = "w780";
 
     public Movie(String title, String thumbnail, String overview,
-                 String userRating, String releaseDate) {
+                 String userRating, String releaseDate, String backdrop) {
         mTitle = title;
         mThumbnail = thumbnail;
         mOverview = overview;
         mUserRating = userRating;
         mReleaseDate = releaseDate;
+        mBackdrop = backdrop;
     }
 
     public String getTitle() {
@@ -46,11 +46,7 @@ public class Movie {
         return mReleaseDate;
     }
 
-    private String buildImageUri(String thumbnailUrl) {
-        Uri imageUri = Uri.parse(THUMBNAIL_BASE_URL).buildUpon()
-                .appendPath(FILE_DEFAULT_SIZE)
-                .appendPath(thumbnailUrl).build();
-
-        return imageUri.toString();
+    public String getBackdrop() {
+        return THUMBNAIL_BASE_URL + FILE_LARGE_SIZE + mBackdrop;
     }
 }

@@ -52,19 +52,17 @@ public final class QueryUtils {
 
                 String voteAverage = currentMovie.getString("vote_average");
                 String posterPath = currentMovie.getString("poster_path");
-                String originalTitle = currentMovie.getString("original_title");
+                String originalTitle = currentMovie.getString("title");
                 String overview = currentMovie.getString("overview");
                 String releaseDate = currentMovie.getString("release_date");
+                String backdrop = currentMovie.getString("backdrop_path");
 
                 Movie movie = new Movie(originalTitle,
                         posterPath,
                         overview,
                         voteAverage,
-                        releaseDate);
-
-                Log.e(LOG_TAG, "MOVIE AVERAGE: " + voteAverage);
-                Log.e(LOG_TAG, "MOVIE POSTER: " + posterPath);
-                Log.e(LOG_TAG, "MOVIE TITLE: " + originalTitle);
+                        releaseDate,
+                        backdrop);
 
                 movieList.add(movie);
             }
