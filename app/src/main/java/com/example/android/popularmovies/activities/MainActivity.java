@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.activities;
 
 import android.app.LoaderManager;
 import android.content.Context;
@@ -17,7 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.android.popularmovies.Data.MovieLoader;
+import com.example.android.popularmovies.data.MovieLoader;
+import com.example.android.popularmovies.ui.EmptyRecyclerView;
+import com.example.android.popularmovies.model.Movie;
+import com.example.android.popularmovies.ui.MovieAdapter;
+import com.example.android.popularmovies.R;
 
 import java.util.ArrayList;
 import java.util.List;

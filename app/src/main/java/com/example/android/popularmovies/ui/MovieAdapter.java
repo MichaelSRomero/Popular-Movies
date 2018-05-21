@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,15 +13,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.activities.DetailActivity;
+import com.example.android.popularmovies.activities.OverviewFragment;
+import com.example.android.popularmovies.model.Movie;
 
 import java.util.List;
-
-import static com.example.android.popularmovies.Data.Keys.BACKDROP;
-import static com.example.android.popularmovies.Data.Keys.OVERVIEW;
-import static com.example.android.popularmovies.Data.Keys.RELEASE_DATE;
-import static com.example.android.popularmovies.Data.Keys.THUMBNAIL;
-import static com.example.android.popularmovies.Data.Keys.TITLE;
-import static com.example.android.popularmovies.Data.Keys.USER_RATING;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> {
 
@@ -76,18 +73,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
             public void onClick(View view) {
 
                 Intent intent = new Intent(view.getContext(), DetailActivity.class);
-                Bundle bundle = new Bundle();
-
-                // Passes all Movie details into the DetailActivity screen
-                bundle.putString(TITLE , currentMovie.getTitle());
-                bundle.putString(THUMBNAIL, currentMovie.getLargeThumbnail());
-                bundle.putString(OVERVIEW, currentMovie.getOverview());
-                bundle.putString(USER_RATING, currentMovie.getUserRating());
-                bundle.putString(RELEASE_DATE, currentMovie.getReleaseDate());
-                bundle.putString(BACKDROP, currentMovie.getBackdrop());
-                intent.putExtras(bundle);
+                intent.putExtra(Movie.MOVIE_KEY, currentMovie);
 
                 view.getContext().startActivity(intent);
+
+                // Passes "overview" into the OverviewFragment class
+                Bundle fragmentBundle = new Bundle();
+                fragmentBundle.putParcelable(Movie.MOVIE_KEY, currentMovie);
+
+                OverviewFragment fragment = new OverviewFragment();
+                fragment.setArguments(fragmentBundle);
             }
         });
     }

@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Allows for a custom ToolBar to be used for DetailActivity -->
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
+
     <!-- Allows for a Translucent App Bar -->
     <style name="AppTheme.Transparent" parent="AppTheme">
         <item name="windowActionBarOverlay">true</item>
@@ -19,18 +23,33 @@
         <item name="android:background">@color/xml_border</item>
     </style>
 
+    <!-- Basic Style for text inside activity_detail -->
     <style name="MainDetailText">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
 
+    <!-- Style for movie title inside activity_detail -->
     <style name="MainDetailText.Title" parent="MainDetailText">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/detail_title_text</item>
     </style>
 
+    <!-- Style for detail text inside activity_detail -->
     <style name="MainDetailText.Details" parent="MainDetailText">
         <item name="android:textSize">@dimen/text_16sp</item>
+    </style>
+
+    <!-- Style for a tab that displays a category name -->
+    <style name="CategoryTab" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@android:color/white</item>
+        <item name="tabSelectedTextColor">@android:color/white</item>
+        <item name="tabTextAppearance">@style/CategoryTabTextAppearance</item>
+    </style>
+
+    <!-- Text appearance style for a category tab -->
+    <style name="CategoryTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textColor">#A8A19E</item>
     </style>
 
 </resources>

@@ -7,10 +7,11 @@
     <!-- Color used for App Bar inside Details Activity -->
     <color name="TranslucentColor">#29000000</color>
     <color name="white">#ffffff</color>
-    <color name="cyan_500">#B300BCD4</color>
+    <color name="cyan_500_translucent_70">#B300BCD4</color>
+    <color name="cyan_500">#00BCD4</color>
     <color name="deep_orange_500">#FF5722</color>
     <color name="circle_stroke">#444444</color>
     <color name="rectangle_solid">#55111111</color>
     <color name="xml_border">#444444</color>
-    <color name="cyan_500_translucent">#E600BCD4</color>
+    <color name="cyan_500_translucent_90">#E600BCD4</color>
 </resources>

@@ -17,4 +17,7 @@
     <dimen name="detail_title_text">28sp</dimen>
     <dimen name="text_16sp">16sp</dimen>
     <dimen name="detail_border_small">1dp</dimen>
+    <dimen name="title_margin_32dp">32dp</dimen>
+    <dimen name="title_margin_64dp">64dp</dimen>
+    <dimen name="title_margin_48dp">48dp</dimen>
 </resources>

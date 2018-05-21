@@ -1,4 +1,4 @@
-package com.example.android.popularmovies.Data;
+package com.example.android.popularmovies.data;
 
 public class Keys {
 

@@ -1,9 +1,10 @@
-package com.example.android.popularmovies.Data;
+package com.example.android.popularmovies.utils;
 
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.android.popularmovies.Movie;
+import com.example.android.popularmovies.model.Movie;
+import com.example.android.popularmovies.model.Video;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.example.android.popularmovies.MainActivity.LOG_TAG;
+import static com.example.android.popularmovies.activities.MainActivity.LOG_TAG;
 
 public final class QueryUtils {
 
@@ -50,6 +51,7 @@ public final class QueryUtils {
                 // Get a single movie at position i within the list of movies
                 JSONObject currentMovie = movieArray.getJSONObject(i);
 
+                int movieId = currentMovie.getInt("id");
                 String voteAverage = currentMovie.getString("vote_average");
                 String posterPath = currentMovie.getString("poster_path");
                 String originalTitle = currentMovie.getString("title");
@@ -57,7 +59,8 @@ public final class QueryUtils {
                 String releaseDate = currentMovie.getString("release_date");
                 String backdrop = currentMovie.getString("backdrop_path");
 
-                Movie movie = new Movie(originalTitle,
+                Movie movie = new Movie(movieId,
+                        originalTitle,
                         posterPath,
                         overview,
                         voteAverage,
@@ -72,6 +75,49 @@ public final class QueryUtils {
         }
 
         return movieList;
+    }
+
+    /**
+     *
+     * @param videoUrl          used to parse to JSONObject
+     * @return                  a list of Video objects
+     */
+    private static List<Video> extractVideo(String videoUrl) {
+
+        if (TextUtils.isEmpty(videoUrl)) {
+            return null;
+        }
+
+        List<Video> videoList = new ArrayList<>();
+
+        try {
+            // Create a JSONObject from the JSON response string
+            JSONObject baseJson = new JSONObject(videoUrl);
+
+            JSONArray videoArray = baseJson.getJSONArray("results");
+
+            // For each video in the videoArray, create a video object
+            for (int i = 0; i < videoArray.length(); i++) {
+
+                // Get a single movie at position i within the list of videos
+                JSONObject currentVideo = videoArray.getJSONObject(i);
+
+                String key = currentVideo.getString("key");
+                String name = currentVideo.getString("name");
+                String site = currentVideo.getString("site");
+
+                Video video = new Video(key,
+                        name,
+                        site);
+
+                videoList.add(video);
+            }
+
+        } catch (JSONException e) {
+            Log.e("QueryUtils", "Problem parsing the video JSON results", e);
+        }
+
+        return videoList;
     }
 
     /**
@@ -93,7 +139,7 @@ public final class QueryUtils {
      * @return                      the contents of the HTTP response
      * @throws IOException          related to network and stream reading
      */
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
+    private static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream inputStream = urlConnection.getInputStream();
@@ -131,5 +177,26 @@ public final class QueryUtils {
         List<Movie> movies = extractResultsFromJson(jsonResponse);
 
         return movies;
+    }
+
+    /**
+     *
+     * @param requestUrl        used to query data
+     * @return                  a list of Video objects
+     */
+    public static List<Video> fetchVideoData(String requestUrl) {
+        URL url = createUrl(requestUrl);
+
+        String jsonResponse = null;
+        try {
+            jsonResponse = getResponseFromHttpUrl(url);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+        }
+
+        // Extract details from the JSON response and create a list of Movies
+        List<Video> videos = extractVideo(jsonResponse);
+
+        return videos;
     }
 }

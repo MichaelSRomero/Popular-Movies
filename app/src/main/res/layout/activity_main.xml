@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.android.popularmovies.EmptyRecyclerView
+    <com.example.android.popularmovies.ui.EmptyRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:scrollbars="vertical">
 
-    </com.example.android.popularmovies.EmptyRecyclerView>
+    </com.example.android.popularmovies.ui.EmptyRecyclerView>
 
 
     <!-- Empty view is only visible when the list has no items. -->
