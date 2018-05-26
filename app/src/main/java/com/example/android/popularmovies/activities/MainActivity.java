@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.android.popularmovies.data.DataKeys;
 import com.example.android.popularmovies.data.MovieLoader;
 import com.example.android.popularmovies.ui.EmptyRecyclerView;
 import com.example.android.popularmovies.model.Movie;
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity
     private static final int MOVIE_LOADER_ID = 1;
 
     /** Add your own API Key by accessing "https://developers.themoviedb.org" */
-    private final String API_KEY = "api_key=";
-    private final String MOVIE_BASE_URL = "http://api.themoviedb.org/3/movie/";
+    //private final String API_KEY = "api_key=6ec3702af14868934fb9363ddc62594e";
+    //private final String MOVIE_BASE_URL = "http://api.themoviedb.org/3/movie/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,9 @@ public class MainActivity extends AppCompatActivity
                 getString(R.string.settings_order_by_default)
         );
 
-        String movieUrl = MOVIE_BASE_URL + orderBy + API_KEY;
+        String movieUrl = DataKeys.MOVIE_BASE_URL
+                + orderBy
+                + DataKeys.API_KEY;
 
         return new MovieLoader(this, movieUrl);
     }

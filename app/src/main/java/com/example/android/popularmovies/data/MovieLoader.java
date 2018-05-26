@@ -4,7 +4,7 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 
 import com.example.android.popularmovies.model.Movie;
-import com.example.android.popularmovies.utils.QueryUtils;
+import com.example.android.popularmovies.utils.MovieQuery;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
             return null;
         }
 
-        List<Movie> movieList = QueryUtils.fetchMovieData(mUrl);
+        List<Movie> movieList = MovieQuery.fetchMovieData(mUrl);
         return movieList;
     }
 }

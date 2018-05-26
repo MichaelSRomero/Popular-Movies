@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.activities.DetailActivity;
 import com.example.android.popularmovies.activities.OverviewFragment;
+import com.example.android.popularmovies.activities.VideoFragment;
 import com.example.android.popularmovies.model.Movie;
 
 import java.util.List;
@@ -32,6 +32,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         public RelativeLayout relativeLayout;
 
         public MyViewHolder(View itemView) {
+
             super(itemView);
             title = itemView.findViewById(R.id.tv_title);
             userRating = itemView.findViewById(R.id.tv_rating);
@@ -56,11 +57,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
         final Movie currentMovie = mMovieList.get(position);
 
         holder.title.setText(currentMovie.getTitle());
         holder.userRating.setText(currentMovie.getUserRating());
-        Log.e("TEST", "IMAGE URL: " + currentMovie.getThumbnail());
 
         // Loads movie poster using Glide Library
         Glide.with(mContext)
@@ -72,6 +73,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
             @Override
             public void onClick(View view) {
 
+                // Passes Movie data into DetailActivity
                 Intent intent = new Intent(view.getContext(), DetailActivity.class);
                 intent.putExtra(Movie.MOVIE_KEY, currentMovie);
 
@@ -81,8 +83,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
                 Bundle fragmentBundle = new Bundle();
                 fragmentBundle.putParcelable(Movie.MOVIE_KEY, currentMovie);
 
-                OverviewFragment fragment = new OverviewFragment();
-                fragment.setArguments(fragmentBundle);
+                OverviewFragment overviewFragment = new OverviewFragment();
+                overviewFragment.setArguments(fragmentBundle);
+
+                // Passes Movie data into the VideoFragment class
+                VideoFragment videoFragment = new VideoFragment();
+                videoFragment.setArguments(fragmentBundle);
             }
         });
     }

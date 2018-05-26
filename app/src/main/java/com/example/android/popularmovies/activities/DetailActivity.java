@@ -16,8 +16,8 @@ import com.example.android.popularmovies.ui.CategoryAdapter;
 public class DetailActivity extends AppCompatActivity {
 
     public Movie mMovie;
-    public String mTitle, mThumbnail, mOverview, mUserRating, mReleaseDate, mBackdropPath;
-    public TextView mTitleView, mOverviewText, mRatingView, mReleaseDateView;
+    public String mTitle, mThumbnail, mUserRating, mReleaseDate, mBackdropPath;
+    public TextView mTitleView, mRatingView, mReleaseDateView;
     public ImageView mThumbnailView, mBackdropView;
 
     public android.support.v7.widget.Toolbar toolbar;
@@ -47,7 +47,6 @@ public class DetailActivity extends AppCompatActivity {
         Bundle receiveBundle = getIntent().getExtras();
         if (!receiveBundle.isEmpty()) {
             mMovie = receiveBundle.getParcelable(Movie.MOVIE_KEY);
-
             mTitle = mMovie.getTitle();
             mThumbnail = mMovie.getThumbnail();
             mUserRating = mMovie.getUserRating();
@@ -56,7 +55,6 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         mTitleView = findViewById(R.id.tv_title);
-        //mOverviewText = findViewById(R.id.tv_overview);
         mRatingView = findViewById(R.id.tv_rating);
         mReleaseDateView = findViewById(R.id.tv_release_date);
         mBackdropView = findViewById(R.id.iv_backdrop);
@@ -71,7 +69,6 @@ public class DetailActivity extends AppCompatActivity {
      */
     public void displayDetails() {
         mTitleView.setText(mTitle);
-        //mOverviewText.setText(mOverview);
         mRatingView.setText(mUserRating + getString(R.string.detail_10_stars));
         mReleaseDateView.setText(mReleaseDate);
 

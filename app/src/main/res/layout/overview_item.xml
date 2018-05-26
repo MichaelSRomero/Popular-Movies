@@ -12,6 +12,5 @@
         android:paddingLeft="@dimen/padding_margin_16dp"
         android:paddingRight="@dimen/padding_margin_16dp"
         android:paddingTop="@dimen/padding_margin_8dp"
-        android:text="Testing"
         android:textSize="@dimen/text_16sp" />
 </LinearLayout>
