@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.activities.DetailActivity;
 import com.example.android.popularmovies.activities.OverviewFragment;
+import com.example.android.popularmovies.activities.ReviewFragment;
 import com.example.android.popularmovies.activities.VideoFragment;
 import com.example.android.popularmovies.model.Movie;
 
@@ -65,7 +66,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
         // Loads movie poster using Glide Library
         Glide.with(mContext)
-                .load(currentMovie.getThumbnail())
+                .load(currentMovie.getThumbnailPath())
                 .into(holder.thumbnail);
 
         // Opens DetailActivity when clicked on movie thumbnail
@@ -79,16 +80,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
                 view.getContext().startActivity(intent);
 
-                // Passes "overview" into the OverviewFragment class
                 Bundle fragmentBundle = new Bundle();
                 fragmentBundle.putParcelable(Movie.MOVIE_KEY, currentMovie);
 
+                // Passes "overview" into the OverviewFragment class
                 OverviewFragment overviewFragment = new OverviewFragment();
                 overviewFragment.setArguments(fragmentBundle);
 
                 // Passes Movie data into the VideoFragment class
                 VideoFragment videoFragment = new VideoFragment();
                 videoFragment.setArguments(fragmentBundle);
+
+                // Passes Movie data into the ReviewFragment class
+                ReviewFragment reviewFragment = new ReviewFragment();
+                reviewFragment.setArguments(fragmentBundle);
             }
         });
     }

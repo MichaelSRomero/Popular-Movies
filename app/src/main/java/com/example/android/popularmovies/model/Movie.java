@@ -1,13 +1,20 @@
 package com.example.android.popularmovies.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+@Entity(tableName = "favorites")
 public class Movie implements Parcelable {
 
     /** Key to access and send data with **/
+    @Ignore
     public static final String MOVIE_KEY = "movie";
 
+    @PrimaryKey(autoGenerate = true)
+    private int mId;
     private String mTitle;
     private String mThumbnail;
     private String mOverview;
@@ -16,13 +23,20 @@ public class Movie implements Parcelable {
     private String mBackdrop;
     private int mMovieId;
 
+    @Ignore
     private final String THUMBNAIL_BASE_URL = "http://image.tmdb.org/t/p/";
+    @Ignore
     private final String FILE_DEFAULT_SIZE = "w342";
+    @Ignore
     private final String FILE_LARGE_SIZE = "w780";
 
-    public Movie(int id, String title, String thumbnail, String overview,
+    /*
+     * Constructor that Room will be using
+     */
+    public Movie(int id, int movieId, String title, String thumbnail, String overview,
                  String userRating, String releaseDate, String backdrop) {
-        mMovieId = id;
+        mId = id;
+        mMovieId = movieId;
         mTitle = title;
         mThumbnail = thumbnail;
         mOverview = overview;
@@ -31,6 +45,19 @@ public class Movie implements Parcelable {
         mBackdrop = backdrop;
     }
 
+    @Ignore
+    public Movie(int movieId, String title, String thumbnail, String overview,
+                 String userRating, String releaseDate, String backdrop) {
+        mMovieId = movieId;
+        mTitle = title;
+        mThumbnail = thumbnail;
+        mOverview = overview;
+        mUserRating = userRating;
+        mReleaseDate = releaseDate;
+        mBackdrop = backdrop;
+    }
+
+    @Ignore
     protected Movie(Parcel in) {
         mTitle = in.readString();
         mThumbnail = in.readString();
@@ -41,6 +68,7 @@ public class Movie implements Parcelable {
         mMovieId = in.readInt();
     }
 
+    @Ignore
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel in) {
@@ -53,6 +81,10 @@ public class Movie implements Parcelable {
         }
     };
 
+    public int getId() {
+        return mId;
+    }
+
     public int getMovieId() {
         return mMovieId;
     }
@@ -61,12 +93,14 @@ public class Movie implements Parcelable {
         return mTitle;
     }
 
-    public String getThumbnail() {
+    @Ignore
+    public String getThumbnailPath() {
         return THUMBNAIL_BASE_URL + FILE_DEFAULT_SIZE + mThumbnail;
     }
 
-    public String getLargeThumbnail() {
-        return THUMBNAIL_BASE_URL + FILE_LARGE_SIZE + mThumbnail;
+    /** Used for Database */
+    public String getThumbnail() {
+        return mThumbnail;
     }
 
     public String getOverview() {
@@ -81,15 +115,23 @@ public class Movie implements Parcelable {
         return mReleaseDate;
     }
 
-    public String getBackdrop() {
+    @Ignore
+    public String getBackdropPath() {
         return THUMBNAIL_BASE_URL + FILE_LARGE_SIZE + mBackdrop;
     }
 
+    /** Used for Database */
+    public String getBackdrop() {
+        return mBackdrop;
+    }
+
+    @Ignore
     @Override
     public int describeContents() {
         return 0;
     }
 
+    @Ignore
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(mTitle);

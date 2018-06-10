@@ -1,6 +1,5 @@
 package com.example.android.popularmovies.activities;
 
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -17,38 +16,35 @@ import android.widget.TextView;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.DataKeys;
-import com.example.android.popularmovies.data.VideoLoader;
+import com.example.android.popularmovies.data.ReviewLoader;
 import com.example.android.popularmovies.model.Movie;
-import com.example.android.popularmovies.model.Video;
+import com.example.android.popularmovies.model.Review;
 import com.example.android.popularmovies.ui.EmptyRecyclerView;
-import com.example.android.popularmovies.ui.VideoAdapter;
+import com.example.android.popularmovies.ui.ReviewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class VideoFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<List<Video>> {
+public class ReviewFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<List<Review>> {
 
-    public VideoFragment() {
+    public ReviewFragment() {
         // Required empty public constructor
     }
 
     private EmptyRecyclerView mRecyclerView;
-    private VideoAdapter mVideoAdapter;
-    private List<Video> mVideoList;
+    private ReviewAdapter mReviewAdapter;
+    private List<Review> mReviewList;
     public Movie mMovie;
 
     /** TextView that is displayed when the list is empty */
     private TextView mEmptyStateTextView;
 
     private NetworkInfo mNetworkInfo = null;
-    private static final int VIDEO_LOADER_ID = 1;
+    private static final int REVIEW_LOADER_ID = 1;
 
-    /** String path to query for Videos */
-    private final String VIDEO_PATH = "/videos?";
+    /** String path to query for Reviews */
+    private final String REVIEW_PATH = "/reviews?";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,18 +61,18 @@ public class VideoFragment extends Fragment
         mEmptyStateTextView = rootView.findViewById(R.id.empty_view);
         mRecyclerView.setEmptyView(mEmptyStateTextView);
 
-        mVideoList = new ArrayList<>();
-        mVideoAdapter = new VideoAdapter(rootView.getContext(), mVideoList);
+        mReviewList = new ArrayList<>();
+        mReviewAdapter = new ReviewAdapter(rootView.getContext(), mReviewList);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(rootView.getContext());
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mVideoAdapter);
+        mRecyclerView.setAdapter(mReviewAdapter);
 
         checkNetworkConnectivity();
 
         // If there is a network connection, fetch data
         if (mNetworkInfo != null && mNetworkInfo.isConnected()) {
-            getLoaderManager().initLoader(VIDEO_LOADER_ID, null, this);
+            getLoaderManager().initLoader(REVIEW_LOADER_ID, null, this);
         } else {
             // Else display error and hide loading indicator
             View loadingIndicator = rootView.findViewById(R.id.progress_bar);
@@ -85,7 +81,6 @@ public class VideoFragment extends Fragment
             mEmptyStateTextView.setText(R.string.no_internet_connection);
         }
         return rootView;
-
     }
 
     /**
@@ -105,40 +100,40 @@ public class VideoFragment extends Fragment
 
 
     @Override
-    public Loader<List<Video>> onCreateLoader(int id, Bundle args) {
+    public Loader<List<Review>> onCreateLoader(int id, Bundle args) {
 
         String movieID = Integer.toString(mMovie.getMovieId());
-        String videoUrl = DataKeys.MOVIE_BASE_URL
+        String reviewUrl = DataKeys.MOVIE_BASE_URL
                 + movieID
-                + VIDEO_PATH
+                + REVIEW_PATH
                 + DataKeys.API_KEY;
 
-        return new VideoLoader(getActivity(), videoUrl);
+        return new ReviewLoader(getActivity(), reviewUrl);
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Video>> loader, List<Video> data) {
+    public void onLoadFinished(Loader<List<Review>> loader, List<Review> data) {
 
-        View loadingIndicator = getActivity().findViewById(R.id.progress_bar);
+        View loadingIndicator = getView().findViewById(R.id.progress_bar);
         loadingIndicator.setVisibility(View.GONE);
 
         checkNetworkConnectivity();
         if (mNetworkInfo == null) {
             mEmptyStateTextView.setText(R.string.no_internet_connection);
         } else {
-            mEmptyStateTextView.setText(R.string.no_videos);
+            mEmptyStateTextView.setText(R.string.no_reviews);
         }
 
-        mVideoAdapter.clearData(data);
+        mReviewAdapter.clearData(data);
 
         if (data != null && !data.isEmpty()) {
-            mVideoAdapter.addData(data);
+            mReviewAdapter.addData(data);
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<List<Video>> loader) {
+    public void onLoaderReset(Loader<List<Review>> loader) {
 
-        mVideoAdapter.clearData(mVideoList);
+        mReviewAdapter.clearData(mReviewList);
     }
 }

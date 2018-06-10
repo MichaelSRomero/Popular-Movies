@@ -5,11 +5,16 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.database.AppDatabase;
+import com.example.android.popularmovies.database.AppExecutors;
 import com.example.android.popularmovies.model.Movie;
 import com.example.android.popularmovies.ui.CategoryAdapter;
 
@@ -20,11 +25,20 @@ public class DetailActivity extends AppCompatActivity {
     public TextView mTitleView, mRatingView, mReleaseDateView;
     public ImageView mThumbnailView, mBackdropView;
 
+    // Constant used to check if Movie has been added to "favorites" database
+    private static final int DEFAULT_MOVIE_ID = -1;
+
+    // Member variable for the Database
+    private AppDatabase mDb;
+    private Boolean isFavorited = true;
+
     public android.support.v7.widget.Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        mDb = AppDatabase.getsInstance(getApplicationContext());
 
         toolbar = findViewById(R.id.detail_toolbar);
         if (toolbar != null) {
@@ -48,10 +62,10 @@ public class DetailActivity extends AppCompatActivity {
         if (!receiveBundle.isEmpty()) {
             mMovie = receiveBundle.getParcelable(Movie.MOVIE_KEY);
             mTitle = mMovie.getTitle();
-            mThumbnail = mMovie.getThumbnail();
+            mThumbnail = mMovie.getThumbnailPath();
             mUserRating = mMovie.getUserRating();
             mReleaseDate = mMovie.getReleaseDate();
-            mBackdropPath = mMovie.getBackdrop();
+            mBackdropPath = mMovie.getBackdropPath();
         }
 
         mTitleView = findViewById(R.id.tv_title);
@@ -59,6 +73,16 @@ public class DetailActivity extends AppCompatActivity {
         mReleaseDateView = findViewById(R.id.tv_release_date);
         mBackdropView = findViewById(R.id.iv_backdrop);
         mThumbnailView = findViewById(R.id.iv_poster_thumbnail);
+        
+
+//        // If movie ID doesn't match,
+//        // then it is inside the "favorites" database.
+//        // So we set the proper icon and variable "isFavorited" to false.
+//        if (mMovie.getId() != DEFAULT_MOVIE_ID) {
+//            ActionMenuItem favoriteItem = findViewById(R.id.action_favorite);
+//            favoriteItem.setIcon(getResources().getDrawable(R.drawable.ic_favorited));
+//            isFavorited = false;
+//        }
 
         displayDetails();
         setUpAppBarLayout();
@@ -105,5 +129,58 @@ public class DetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int currentItem = item.getItemId();
+        switch (currentItem) {
+            case R.id.action_favorite:
+                switchFavoriteIcon(item);
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void addToFavorites() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.favoriteDao().insertMovie(mMovie);
+            }
+        });
+    }
+
+    public void removeFromFavorites() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.favoriteDao().deleteMovie(mMovie);
+            }
+        });
+    }
+
+    public void switchFavoriteIcon(MenuItem item) {
+
+        if (isFavorited) {
+            Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show();
+            item.setIcon(getResources().getDrawable(R.drawable.ic_favorited));
+            addToFavorites();
+            isFavorited = false;
+        } else {
+            Toast.makeText(this, "Removed from Favorites", Toast.LENGTH_SHORT).show();
+            item.setIcon(getResources().getDrawable(R.drawable.ic_unfavorite));
+            removeFromFavorites();
+            isFavorited = true;
+        }
     }
 }

@@ -40,6 +40,11 @@
         <item name="android:textSize">@dimen/text_16sp</item>
     </style>
 
+    <!-- Style for detail text inside video_item and review_item -->
+    <style name="ReviewItem.Body" parent="MainDetailText">
+        <item name="android:color">@android:color/black</item>
+    </style>
+
     <!-- Style for a tab that displays a category name -->
     <style name="CategoryTab" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">@android:color/white</item>

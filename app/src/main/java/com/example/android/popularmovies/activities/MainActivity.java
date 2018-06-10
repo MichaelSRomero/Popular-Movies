@@ -1,6 +1,8 @@
 package com.example.android.popularmovies.activities;
 
 import android.app.LoaderManager;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
@@ -9,20 +11,25 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.DataKeys;
 import com.example.android.popularmovies.data.MovieLoader;
-import com.example.android.popularmovies.ui.EmptyRecyclerView;
+import com.example.android.popularmovies.database.AppDatabase;
+import com.example.android.popularmovies.model.MainViewModel;
 import com.example.android.popularmovies.model.Movie;
+import com.example.android.popularmovies.ui.EmptyRecyclerView;
 import com.example.android.popularmovies.ui.MovieAdapter;
-import com.example.android.popularmovies.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,19 +39,19 @@ public class MainActivity extends AppCompatActivity
 
     public static final String LOG_TAG = MainActivity.class.getName();
 
-    private EmptyRecyclerView mRecyclerView;
+    public AppDatabase mDatabase;
+    public EmptyRecyclerView mRecyclerView;
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovieList;
+    private String mOrderBy;
+    public final String FAVORITES = "favorite";
+
 
     /** TextView that is displayed when the list is empty */
     private TextView mEmptyStateTextView;
 
     private NetworkInfo mNetworkInfo = null;
     private static final int MOVIE_LOADER_ID = 1;
-
-    /** Add your own API Key by accessing "https://developers.themoviedb.org" */
-    //private final String API_KEY = "api_key=6ec3702af14868934fb9363ddc62594e";
-    //private final String MOVIE_BASE_URL = "http://api.themoviedb.org/3/movie/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,18 +71,47 @@ public class MainActivity extends AppCompatActivity
 
         mRecyclerView.setAdapter(mMovieAdapter);
 
-        checkNetworkConnectivity();
+        mDatabase = AppDatabase.getsInstance(getApplicationContext());
 
-        // If there is a network connection, fetch data
-        if (mNetworkInfo != null && mNetworkInfo.isConnected()) {
-            getLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
-        } else {
-            // Else display error and hide loading indicator
+        checkNetworkConnectivity();
+        returnOrderByPreference();
+
+        if (mOrderBy.equals(FAVORITES)) {
             View loadingIndicator = findViewById(R.id.progress_bar);
             loadingIndicator.setVisibility(View.GONE);
 
-            mEmptyStateTextView.setText(R.string.no_internet_connection);
+            setupViewModel();
+            Toast.makeText(this, "Loading Favorites", Toast.LENGTH_SHORT).show();
+        } else {
+            // If there is a network connection, fetch data
+            if (mNetworkInfo != null && mNetworkInfo.isConnected()) {
+                getLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
+            } else {
+                // Else display error and hide loading indicator
+                View loadingIndicator = findViewById(R.id.progress_bar);
+                loadingIndicator.setVisibility(View.GONE);
+
+                mEmptyStateTextView.setText(R.string.no_internet_connection);
+            }
         }
+//        // If there is a network connection, fetch data
+//        if (mNetworkInfo != null && mNetworkInfo.isConnected()) {
+//            getLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
+//        } else {
+//            // Else display error and hide loading indicator
+//            View loadingIndicator = findViewById(R.id.progress_bar);
+//            loadingIndicator.setVisibility(View.GONE);
+//
+//            mEmptyStateTextView.setText(R.string.no_internet_connection);
+//        }
+    }
+
+    private void returnOrderByPreference() {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        mOrderBy = sharedPreferences.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default));
     }
 
     @Override
@@ -83,15 +119,15 @@ public class MainActivity extends AppCompatActivity
 
         // Gets called whenever the "Order-by" settings is changed
         // Value gets changed between "popular?" and "top-rated?"
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        String orderBy = sharedPreferences.getString(
-                getString(R.string.settings_order_by_key),
-                getString(R.string.settings_order_by_default)
-        );
+//        SharedPreferences sharedPreferences = PreferenceManager
+//                .getDefaultSharedPreferences(this);
+//        String orderBy = sharedPreferences.getString(
+//                getString(R.string.settings_order_by_key),
+//                getString(R.string.settings_order_by_default)
+//        );
 
         String movieUrl = DataKeys.MOVIE_BASE_URL
-                + orderBy
+                + mOrderBy
                 + DataKeys.API_KEY;
 
         return new MovieLoader(this, movieUrl);
@@ -155,5 +191,18 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupViewModel() {
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.getMovieList().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(@Nullable List<Movie> movies) {
+                mMovieAdapter.addData(movies);
+                if (!movies.isEmpty()) {
+                    Log.v(LOG_TAG, "Image Path = " + movies.get(0).getThumbnailPath());
+                }
+            }
+        });
     }
 }
