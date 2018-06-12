@@ -20,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.DataKeys;
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity
             loadingIndicator.setVisibility(View.GONE);
 
             setupViewModel();
-            Toast.makeText(this, "Loading Favorites", Toast.LENGTH_SHORT).show();
         } else {
             // If there is a network connection, fetch data
             if (mNetworkInfo != null && mNetworkInfo.isConnected()) {
@@ -94,18 +92,12 @@ public class MainActivity extends AppCompatActivity
                 mEmptyStateTextView.setText(R.string.no_internet_connection);
             }
         }
-//        // If there is a network connection, fetch data
-//        if (mNetworkInfo != null && mNetworkInfo.isConnected()) {
-//            getLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
-//        } else {
-//            // Else display error and hide loading indicator
-//            View loadingIndicator = findViewById(R.id.progress_bar);
-//            loadingIndicator.setVisibility(View.GONE);
-//
-//            mEmptyStateTextView.setText(R.string.no_internet_connection);
-//        }
     }
 
+    /**
+     * Gets called whenever the "Order-by" settings is changed.
+     * Value gets changed between "popular?" and "top-rated?"
+     */
     private void returnOrderByPreference() {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
@@ -116,15 +108,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int i, Bundle bundle) {
-
-        // Gets called whenever the "Order-by" settings is changed
-        // Value gets changed between "popular?" and "top-rated?"
-//        SharedPreferences sharedPreferences = PreferenceManager
-//                .getDefaultSharedPreferences(this);
-//        String orderBy = sharedPreferences.getString(
-//                getString(R.string.settings_order_by_key),
-//                getString(R.string.settings_order_by_default)
-//        );
 
         String movieUrl = DataKeys.MOVIE_BASE_URL
                 + mOrderBy
@@ -168,6 +151,15 @@ public class MainActivity extends AppCompatActivity
         if (movieList != null && !movieList.isEmpty()) {
             mMovieAdapter.addData(movieList);
         }
+
+        if (!mMovieList.isEmpty()) {
+            Log.v(LOG_TAG, "MOVIE ID NAME = " + mMovieList.get(0).getTitle());
+            Log.v(LOG_TAG, "MOVIE ID = " + mMovieList.get(0).getId());
+            Log.v(LOG_TAG, "MOVIE ID NAME = " + mMovieList.get(1).getTitle());
+            Log.v(LOG_TAG, "MOVIE ID = " + mMovieList.get(1).getId());
+        } else {
+            Log.v(LOG_TAG, "MOVIE ID = UNAVAILABLE");
+        }
     }
 
     @Override
@@ -199,8 +191,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChanged(@Nullable List<Movie> movies) {
                 mMovieAdapter.addData(movies);
-                if (!movies.isEmpty()) {
-                    Log.v(LOG_TAG, "Image Path = " + movies.get(0).getThumbnailPath());
+                if (!mMovieList.isEmpty()) {
+                    Log.v(LOG_TAG, "MOVIE ID NAME = " + mMovieList.get(0).getTitle());
+                    Log.v(LOG_TAG, "MOVIE ID = " + mMovieList.get(0).getId());
+                } else {
+                    Log.v(LOG_TAG, "MOVIE ID = UNAVAILABLE");
                 }
             }
         });

@@ -1,10 +1,14 @@
 package com.example.android.popularmovies.activities;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -15,6 +19,8 @@ import com.bumptech.glide.Glide;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.database.AppDatabase;
 import com.example.android.popularmovies.database.AppExecutors;
+import com.example.android.popularmovies.database.MovieViewModel;
+import com.example.android.popularmovies.database.MovieViewModelFactory;
 import com.example.android.popularmovies.model.Movie;
 import com.example.android.popularmovies.ui.CategoryAdapter;
 
@@ -26,7 +32,7 @@ public class DetailActivity extends AppCompatActivity {
     public ImageView mThumbnailView, mBackdropView;
 
     // Constant used to check if Movie has been added to "favorites" database
-    private static final int DEFAULT_MOVIE_ID = -1;
+    private static final int DEFAULT_MOVIE_ID = 0;
 
     // Member variable for the Database
     private AppDatabase mDb;
@@ -53,7 +59,7 @@ public class DetailActivity extends AppCompatActivity {
         CategoryAdapter adapter = new CategoryAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        TabLayout tabLayout = findViewById(R.id.tabs);
+        final TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         // Receive bundle from MainActivity
@@ -66,6 +72,8 @@ public class DetailActivity extends AppCompatActivity {
             mUserRating = mMovie.getUserRating();
             mReleaseDate = mMovie.getReleaseDate();
             mBackdropPath = mMovie.getBackdropPath();
+            Log.v("Detail Activity", "MOVIE ID = " + mMovie);
+            Log.v("Detail Activity", "ID = " + mMovie.getId());
         }
 
         mTitleView = findViewById(R.id.tv_title);
@@ -73,17 +81,8 @@ public class DetailActivity extends AppCompatActivity {
         mReleaseDateView = findViewById(R.id.tv_release_date);
         mBackdropView = findViewById(R.id.iv_backdrop);
         mThumbnailView = findViewById(R.id.iv_poster_thumbnail);
-        
 
-//        // If movie ID doesn't match,
-//        // then it is inside the "favorites" database.
-//        // So we set the proper icon and variable "isFavorited" to false.
-//        if (mMovie.getId() != DEFAULT_MOVIE_ID) {
-//            ActionMenuItem favoriteItem = findViewById(R.id.action_favorite);
-//            favoriteItem.setIcon(getResources().getDrawable(R.drawable.ic_favorited));
-//            isFavorited = false;
-//        }
-
+        checkIsInDatabase();
         displayDetails();
         setUpAppBarLayout();
     }
@@ -135,6 +134,16 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail_menu, menu);
 
+        // If movie ID doesn't match,
+        // then it is inside the "favorites" database.
+        // So we set the proper icon and variable "isFavorited" to false.
+        if (mMovie.getId() != DEFAULT_MOVIE_ID) {
+            MenuItem mFavoriteItem = menu.getItem(0);
+            //ActionMenuItemView mFavoriteItem = findViewById(R.id.action_favorite);
+            mFavoriteItem.setIcon(getResources().getDrawable(R.drawable.ic_favorited));
+            isFavorited = false;
+        }
+
         return true;
     }
 
@@ -156,6 +165,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 mDb.favoriteDao().insertMovie(mMovie);
+                Log.v("Detail Activity", "ADD TEST ID = " + mMovie.getId());
             }
         });
     }
@@ -165,6 +175,9 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 mDb.favoriteDao().deleteMovie(mMovie);
+                Log.v("Detail Activity", "REMOVE TEST ID = " + mMovie.getId());
+                Log.v("Detail Activity", "REMOVE MOVIE ID = " + mMovie);
+                return;
             }
         });
     }
@@ -176,11 +189,33 @@ public class DetailActivity extends AppCompatActivity {
             item.setIcon(getResources().getDrawable(R.drawable.ic_favorited));
             addToFavorites();
             isFavorited = false;
+            Log.v("Detail Activity", "TEST ID = " + mMovie.getId());
         } else {
             Toast.makeText(this, "Removed from Favorites", Toast.LENGTH_SHORT).show();
             item.setIcon(getResources().getDrawable(R.drawable.ic_unfavorite));
             removeFromFavorites();
             isFavorited = true;
+        }
+    }
+
+    /**
+     * Queries database to check if movie exist.
+     * If it exists, then it loads all movie info inside a global variable "mMovie".
+     */
+    public void checkIsInDatabase() {
+        if (mMovie.getId() == DEFAULT_MOVIE_ID) {
+            MovieViewModelFactory factory = new MovieViewModelFactory(mDb, mMovie.getMovieId());
+            final MovieViewModel viewModel
+                    = ViewModelProviders.of(this, factory).get(MovieViewModel.class);
+            viewModel.getMovie().observe(this, new Observer<Movie>() {
+                @Override
+                public void onChanged(@Nullable Movie movie) {
+                    viewModel.getMovie().removeObserver(this);
+                    if (movie != null) {
+                        mMovie = movie;
+                    }
+                }
+            });
         }
     }
 }

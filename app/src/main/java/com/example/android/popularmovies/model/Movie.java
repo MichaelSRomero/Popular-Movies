@@ -13,7 +13,7 @@ public class Movie implements Parcelable {
     @Ignore
     public static final String MOVIE_KEY = "movie";
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey (autoGenerate = true)
     private int mId;
     private String mTitle;
     private String mThumbnail;
@@ -59,6 +59,7 @@ public class Movie implements Parcelable {
 
     @Ignore
     protected Movie(Parcel in) {
+        mId = in.readInt();
         mTitle = in.readString();
         mThumbnail = in.readString();
         mOverview = in.readString();
@@ -80,6 +81,10 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+//    public void setId(int id) {
+//        mId = id;
+//    };
 
     public int getId() {
         return mId;
@@ -134,6 +139,7 @@ public class Movie implements Parcelable {
     @Ignore
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(mId);
         parcel.writeString(mTitle);
         parcel.writeString(mThumbnail);
         parcel.writeString(mOverview);

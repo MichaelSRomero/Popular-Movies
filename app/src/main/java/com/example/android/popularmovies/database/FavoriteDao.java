@@ -22,7 +22,7 @@ public interface FavoriteDao {
     @Delete
     void deleteMovie(Movie movie);
 
-    @Query("SELECT * FROM favorites WHERE mId = :id")
+    @Query("SELECT * FROM favorites WHERE mMovieId = :id")
     LiveData<Movie> loadMovieById(int id);
 
 }
