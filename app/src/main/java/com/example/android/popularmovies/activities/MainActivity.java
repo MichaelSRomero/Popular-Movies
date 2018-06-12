@@ -15,7 +15,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +42,8 @@ public class MainActivity extends AppCompatActivity
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovieList;
     private String mOrderBy;
+
+    /** Used to check if Shared Preferences has been changed to "favorite" */
     public final String FAVORITES = "favorite";
 
 
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(layoutManager);
-
         mRecyclerView.setAdapter(mMovieAdapter);
 
         mDatabase = AppDatabase.getsInstance(getApplicationContext());
@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity
         checkNetworkConnectivity();
         returnOrderByPreference();
 
+        // If the sortOrder is changed to favorite, then loads up a list of Movie(s)
+        // from the database.
+        // Else, queries API
         if (mOrderBy.equals(FAVORITES)) {
             View loadingIndicator = findViewById(R.id.progress_bar);
             loadingIndicator.setVisibility(View.GONE);
@@ -151,15 +154,6 @@ public class MainActivity extends AppCompatActivity
         if (movieList != null && !movieList.isEmpty()) {
             mMovieAdapter.addData(movieList);
         }
-
-        if (!mMovieList.isEmpty()) {
-            Log.v(LOG_TAG, "MOVIE ID NAME = " + mMovieList.get(0).getTitle());
-            Log.v(LOG_TAG, "MOVIE ID = " + mMovieList.get(0).getId());
-            Log.v(LOG_TAG, "MOVIE ID NAME = " + mMovieList.get(1).getTitle());
-            Log.v(LOG_TAG, "MOVIE ID = " + mMovieList.get(1).getId());
-        } else {
-            Log.v(LOG_TAG, "MOVIE ID = UNAVAILABLE");
-        }
     }
 
     @Override
@@ -191,11 +185,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChanged(@Nullable List<Movie> movies) {
                 mMovieAdapter.addData(movies);
-                if (!mMovieList.isEmpty()) {
-                    Log.v(LOG_TAG, "MOVIE ID NAME = " + mMovieList.get(0).getTitle());
-                    Log.v(LOG_TAG, "MOVIE ID = " + mMovieList.get(0).getId());
-                } else {
-                    Log.v(LOG_TAG, "MOVIE ID = UNAVAILABLE");
+                if (mMovieList.isEmpty()) {
+                    mEmptyStateTextView.setText(R.string.main_activity_no_favorites);
                 }
             }
         });

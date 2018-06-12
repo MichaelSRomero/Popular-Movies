@@ -8,7 +8,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -72,8 +71,6 @@ public class DetailActivity extends AppCompatActivity {
             mUserRating = mMovie.getUserRating();
             mReleaseDate = mMovie.getReleaseDate();
             mBackdropPath = mMovie.getBackdropPath();
-            Log.v("Detail Activity", "MOVIE ID = " + mMovie);
-            Log.v("Detail Activity", "ID = " + mMovie.getId());
         }
 
         mTitleView = findViewById(R.id.tv_title);
@@ -139,7 +136,6 @@ public class DetailActivity extends AppCompatActivity {
         // So we set the proper icon and variable "isFavorited" to false.
         if (mMovie.getId() != DEFAULT_MOVIE_ID) {
             MenuItem mFavoriteItem = menu.getItem(0);
-            //ActionMenuItemView mFavoriteItem = findViewById(R.id.action_favorite);
             mFavoriteItem.setIcon(getResources().getDrawable(R.drawable.ic_favorited));
             isFavorited = false;
         }
@@ -165,7 +161,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 mDb.favoriteDao().insertMovie(mMovie);
-                Log.v("Detail Activity", "ADD TEST ID = " + mMovie.getId());
             }
         });
     }
@@ -175,9 +170,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 mDb.favoriteDao().deleteMovie(mMovie);
-                Log.v("Detail Activity", "REMOVE TEST ID = " + mMovie.getId());
-                Log.v("Detail Activity", "REMOVE MOVIE ID = " + mMovie);
-                return;
             }
         });
     }
@@ -185,13 +177,12 @@ public class DetailActivity extends AppCompatActivity {
     public void switchFavoriteIcon(MenuItem item) {
 
         if (isFavorited) {
-            Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.detail_activity_added_favorite, Toast.LENGTH_SHORT).show();
             item.setIcon(getResources().getDrawable(R.drawable.ic_favorited));
             addToFavorites();
             isFavorited = false;
-            Log.v("Detail Activity", "TEST ID = " + mMovie.getId());
         } else {
-            Toast.makeText(this, "Removed from Favorites", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.detail_activity_removed_favorite, Toast.LENGTH_SHORT).show();
             item.setIcon(getResources().getDrawable(R.drawable.ic_unfavorite));
             removeFromFavorites();
             isFavorited = true;
@@ -201,6 +192,7 @@ public class DetailActivity extends AppCompatActivity {
     /**
      * Queries database to check if movie exist.
      * If it exists, then it loads all movie info inside a global variable "mMovie".
+     * Then "mMovie" can be used to set favorite icon properly.
      */
     public void checkIsInDatabase() {
         if (mMovie.getId() == DEFAULT_MOVIE_ID) {

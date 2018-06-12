@@ -21,6 +21,7 @@ import com.example.android.popularmovies.model.Movie;
 import com.example.android.popularmovies.model.Review;
 import com.example.android.popularmovies.ui.EmptyRecyclerView;
 import com.example.android.popularmovies.ui.ReviewAdapter;
+import com.example.android.popularmovies.utils.DividerDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,10 @@ public class ReviewFragment extends Fragment
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(rootView.getContext());
         mRecyclerView.setLayoutManager(layoutManager);
+        DividerDecoration divider = new DividerDecoration(
+                rootView.getContext());
+        mRecyclerView.addItemDecoration(divider);
+
         mRecyclerView.setAdapter(mReviewAdapter);
 
         checkNetworkConnectivity();

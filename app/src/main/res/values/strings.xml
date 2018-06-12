@@ -60,4 +60,7 @@
     <string name="no_videos">No videos found.</string>
     <string name="no_reviews">No reviews found.</string>
     <string name="action_favorite">Favorite</string>
+    <string name="detail_activity_added_favorite">Added to Favorites</string>
+    <string name="detail_activity_removed_favorite">Removed from Favorites</string>
+    <string name="main_activity_no_favorites">You have not added any favorites.</string>
 </resources>
