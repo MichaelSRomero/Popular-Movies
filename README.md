@@ -1,5 +1,5 @@
 <h1 align="center">
-  <a href="https://github.com/MichaelSRomero/tomrunner"><img src="https://github.com/MichaelSRomero/tomrunner/blob/master/assets/tomrunner-logo.png" alt="Tom the Runner" width="300"></a>
+  <a href="https://youtu.be/B2pVWXEio7k"><img src="https://github.com/MichaelSRomero/Popular-Movies/blob/master/app/src/main/res/drawable/popular-movies.png" alt="Logo" width="300"></a>
   <br>
 </h1>
 
