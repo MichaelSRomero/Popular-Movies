@@ -41,9 +41,9 @@ to fire it up
 ## Demo
 
 <h1 align="center">
-  <a href="https://youtu.be/B2pVWXEio7k"><img src="https://github.com/MichaelSRomero/Popular-Movies/blob/master/app/src/main/res/drawable/dashboard.png" alt="Screenshot" height="350"></a>
+  <a href="https://youtu.be/B2pVWXEio7k"><img src="https://github.com/MichaelSRomero/Popular-Movies/blob/master/app/src/main/res/drawable/dashboard.png" alt="Screenshot" height="400"></a>
 
-  <a href="https://youtu.be/B2pVWXEio7k"><img src="https://github.com/MichaelSRomero/Popular-Movies/blob/master/app/src/main/res/drawable/movie-overview.png" alt="Otaku Meets" height="350" style="display: inline-block;"></a>
+  <img src="https://github.com/MichaelSRomero/Popular-Movies/blob/master/app/src/main/res/drawable/movie-overview.png" alt="Otaku Meets" height="400" style="display: inline-block;">
   <br>
 </h1>
 
