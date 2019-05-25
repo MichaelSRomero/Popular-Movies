@@ -17,43 +17,32 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Before you begin to run this project, you must clone the API and install. Repository is located here:
-[Tom-Runner-Client](https://github.com/MichaelSRomero/tomrunner-api)
+Before you begin to run this project, you must fork and clone this repo
 
 ```
 <!-- API -->
-git clone https://github.com/MichaelSRomero/tomrunner-api.git
-<!-- Front End -->
-git clone https://github.com/MichaelSRomero/tomrunner.git
+git clone https://github.com/MichaelSRomero/Popular-Movies.git
 ```
 
-### Installing
+### Gradle Build
+
+Gradle Version: `3.1.2`
 
 ```
-npm install
+compiledSDKVersion 26
+minSdkVersion 15
 ```
 
-Use a local server like [Http-Server](https://www.npmjs.com/package/http-server)
-or
-[MAMP](https://www.mamp.info/en/)
-to fire it up
+Use an IDE like Android Studios to load the app in an Emulator provided by Android Studio or Install it directly onto your phone by clicking on the IDE run build
 
 ## Demo
 
 <h1 align="center">
   <a href="https://youtu.be/B2pVWXEio7k"><img src="https://github.com/MichaelSRomero/Popular-Movies/blob/master/app/src/main/res/drawable/dashboard.png" alt="Screenshot" height="400"></a>
 
-  <img src="https://github.com/MichaelSRomero/Popular-Movies/blob/master/app/src/main/res/drawable/movie-overview.png" alt="Otaku Meets" height="400" style="display: inline-block;">
+  <img src="https://github.com/MichaelSRomero/Popular-Movies/blob/master/app/src/main/res/drawable/movie-overview.png" alt="Screenshot" height="400" style="display: inline-block;">
   <br>
 </h1>
-
-## Deployment
-
-* Backend was deployed on Heroku using the free Hobby Dev option
-* Frontend is deployed and being hosted by GitHub
-<br>
-
-[Tom Runner Game](https://michaelsromero.github.io/tomrunner/?fbclid=IwAR3Gm1gssi3wR7sh3YDrOdCzjphZ3GOBn41mlVh3ihdcH6FVBBjkBt7HLWc)
 
 ## Built With
 
