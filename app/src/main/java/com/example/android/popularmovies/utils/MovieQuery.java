@@ -42,7 +42,6 @@ public class MovieQuery {
 
             // For each movie in the moveArray, create a movie object
             for (int i = 0; i < movieArray.length(); i++) {
-
                 // Get a single movie at position i within the list of movies
                 JSONObject currentMovie = movieArray.getJSONObject(i);
 
