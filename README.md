@@ -55,13 +55,12 @@ to fire it up
 
 ## Built With
 
-* [Phaser 3](http://phaser.io/news) - The game framework used
-* [Ruby on Rails](https://rubyonrails.org/) - Backend
-* Javascript - Plain old Javascript
+* [Android Studio](https://developer.android.com/studio/?gclid=Cj0KCQjwz6PnBRCPARIsANOtCw39ZM2hRXpkW3vwLWRTTwKWHUTGdt1TC-LI3FT9M5xAknn3Gm1r9JEaAv4kEALw_wcB) - IDE for Android
+* [Room](https://developer.android.com/topic/libraries/architecture/room) - Persistance Library for SQLite
+* [Glide](https://github.com/bumptech/glide) - Image loader
 
 ## Authors
 
-* [**Mazen AlSwar**](https://github.com/mazenswar) - *Initial work*
 * [**Michael Romero**](https://github.com/michaelsromero) - *Initial work*
 
 ## License
