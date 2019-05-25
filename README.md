@@ -57,8 +57,3 @@ Use an IDE like Android Studios to load the app in an Emulator provided by Andro
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Animated Runner Character - by [irmirx](https://opengameart.org/users/irmirx)
-* Sci Fi Platforms - from [GameArt2d](https://www.gameart2d.com/free-sci-fi-platformer-tileset.html)
